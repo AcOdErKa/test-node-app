@@ -1,0 +1,26 @@
+{
+  "name": "node-app",
+  "version": "1.0.0",
+  "description": "An Express.js app with user endpoints for testing GitHub Actions workflows",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "mkdir -p build && echo 'console.log(\"Build output\");' > build/bundle.js",
+    "test": "jest --ci --reporters=default --reporters=jest-junit"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
+    "supertest": "^6.3.3"
+  },
+  "jest-junit": {
+    "outputDirectory": "test-reports",
+    "outputName": "test-results.xml"
+  },
+  "author": "",
+  "license": "ISC"
+}

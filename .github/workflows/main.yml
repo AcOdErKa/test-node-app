@@ -1,27 +1,27 @@
-name: Main Workflow
-
+name: CI Pipeline
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 permissions:
   contents: read
   actions: write
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yml
-    with:
-      run_number: ${{ github.run_number }}
-    secrets: inherit
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  test:
-    needs: build
-    uses: ./.github/workflows/test.yml
-    with:
-      run_number: ${{ github.run_number }}
-    secrets: inherit
+      - name: Run Build Workflow
+        uses: ./.github/workflows/build.yml
+        with:
+          run_number: ${{ github.run_number }}
+
+      - name: Run Test Workflow
+        uses: ./.github/workflows/test.yml
+        with:
+          run_number: ${{ github.run_number }}

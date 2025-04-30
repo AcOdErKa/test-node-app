@@ -10,18 +10,13 @@ permissions:
   actions: write
 
 jobs:
-  ci:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      run_number: ${{ github.run_number }}
 
-      - name: Run Build Workflow
-        uses: ./.github/workflows/build.yml
-        with:
-          run_number: ${{ github.run_number }}
-
-      - name: Run Test Workflow
-        uses: ./.github/workflows/test.yml
-        with:
-          run_number: ${{ github.run_number }}
+  test:
+    needs: build
+    uses: ./.github/workflows/test.yml
+    with:
+      run_number: ${{ github.run_number }}

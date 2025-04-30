@@ -1,0 +1,42 @@
+# .github/workflows/build.yml
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      run_number:
+        required: true
+        type: number
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build
+        id: build_step
+        # Call shared build function workflow
+        uses: ./.github/workflows/shared/build_function.yml
+        with:
+          function_name: build
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts-${{ github.run_number }}
+          path: build/*
+          retention-days: 7
+
+      - name: Upload Test Reports Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-artifacts-${{ github.run_number }}
+          path: test-reports/*.xml
+          retention-days: 7

@@ -1,12 +1,10 @@
-# .github/workflows/test.yml
 name: Test
-
 on:
   workflow_call:
     inputs:
       run_number:
         required: true
-        type: number
+        type: string
 
 jobs:
   test:
@@ -15,20 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
+          node-version: '20'
 
       - name: Run tests
         run: npm test
 
-      - name: Upload Test Reports
+      - name: Upload test artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports-${{ github.run_id }}
+          name: test-reports-${{ inputs.run_number }}
           path: test-reports/*.xml
-          if-no-files-found: ignore

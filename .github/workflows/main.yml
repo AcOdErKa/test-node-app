@@ -16,7 +16,7 @@ jobs:
       - name: Run Build Action
         uses: ./.github/actions/build
         with:
-          run_number: 6
+          run_number: ${{ github.run_number }}
 
   test:
     needs: build
@@ -28,4 +28,4 @@ jobs:
       - name: Run Test Action
         uses: ./.github/actions/test
         with:
-          run_number: 6
+          run_number: ${{ github.run_number }}

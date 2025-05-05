@@ -1,11 +1,9 @@
-# .github/workflows/build.yml
 name: Build
-
 on:
   workflow_call:
     inputs:
       run_number:
-        required: false
+        required: true
         type: string
 
 jobs:
@@ -15,19 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
 
-      - name: Build
-        run: npm run build
-
-      - name: Archive build artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts-${{ github.run_id }}
+          name: build-artifacts-${{ inputs.run_number }}
           path: build/*

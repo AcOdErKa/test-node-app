@@ -1,5 +1,4 @@
 name: Main Workflow
-
 on:
   workflow_dispatch:
 
@@ -9,12 +8,24 @@ permissions:
 
 jobs:
   build:
-    uses: ./.github/workflows/build.yml
-    with:
-      run_number: ${{ github.run_number }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Build Action
+        uses: ./.github/actions/build
+        with:
+          run_number: 6
 
   test:
     needs: build
-    uses: ./.github/workflows/test.yml
-    with:
-      run_number: ${{ github.run_number }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Test Action
+        uses: ./.github/actions/test
+        with:
+          run_number: 6

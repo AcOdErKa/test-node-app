@@ -20,23 +20,14 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Build
-        id: build_step
-        # Call shared build function workflow
-        uses: ./.github/workflows/shared/build_function.yml
-        with:
-          function_name: build
+        run: npm run build
 
-      - name: Upload Build Artifacts
+      - name: Archive build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts-${{ github.run_number }}
+          name: build-artifacts-${{ github.run_id }}
           path: build/*
-          retention-days: 7
-
-      - name: Upload Test Reports Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-reports-artifacts-${{ github.run_number }}
-          path: test-reports/*.xml
-          retention-days: 7

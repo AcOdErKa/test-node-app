@@ -8,18 +8,12 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Build Workflow
-        uses: ./.github/workflows/build.yml
-        with:
-          run_number: ${{ github.run_number }}
+    uses: ./.github/workflows/build.yml
+    with:
+      run_number: ${{ github.run_number }}
 
   test:
     needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Test Workflow
-        uses: ./.github/workflows/test.yml
-        with:
-          run_number: ${{ github.run_number }}
+    uses: ./.github/workflows/test.yml
+    with:
+      run_number: ${{ github.run_number }}
